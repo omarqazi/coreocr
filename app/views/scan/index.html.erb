@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <title>BQE Core Image Scan</title>
+        <%= csrf_meta_tag %>
+        <style type="text/css" media="screen">
+            .yes-receipt {
+                color : green;
+            }
+            
+            .no-receipt {
+                color : red;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <h1 id="bqe_core_image_scanner">BQE Core Image Scanner</h1>
+        <img src="http://sandbox.bqecore.com/webapp/images/core-logo-with-tag.png" />
+        
+        <p>Upload an image, and we'll scan it and add it to Core!</p>
+        
+
+   <%= form_tag({action: :upload}, multipart: true) do %>
+     <%= file_field_tag 'picture' %>
+     <%= submit_tag "Upload Image" %>
+   <% end %>
+   
+   <% if @result_text %>
+   <h2>Image Scanned! Here's what it said:</h2>
+   <% if @possibly_receipt %>
+   <h3 class="yes-receipt">This looks like it might be a receipt!</h3>
+   <h4>If so I think the total is <%= number_to_currency(@receipt_total) %></h4>
+   <% else %>
+   <h3 class="no-receipt">This doesn't look like a receipt!</h3>
+   <% end %>
+   <pre>
+   <%= @result_text %>
+    </pre>
+   <% end %>
+    </body>
+</html>
